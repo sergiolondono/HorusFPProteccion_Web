@@ -19,11 +19,13 @@ import {NgbModule} from '@ng-bootstrap/ng-bootstrap';
 
 import { FieldsFunctionalityService } from './fields-functionality.service';
 import {DocumentsService} from './documents.service';
+import { LoginComponent } from './components/login/login.component';
 @NgModule({
   declarations: [
     AppComponent,
     MenuComponent,
-    ColasTrabajoComponent
+    ColasTrabajoComponent,
+    LoginComponent
     // ,
     // MenuComponent
   ],
