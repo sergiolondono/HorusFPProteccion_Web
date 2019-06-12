@@ -1,0 +1,19 @@
+<div class="row " [formGroup]="form" #formulario>
+    <label class="col-md-5 form-control-label" [attr.for]="field.label">
+                <b>{{field.label}}</b>
+                <strong class="text-danger" *ngIf="field.required">*</strong>
+              </label>
+    <div class="col-md-12" [ngSwitch]="field.type">
+        <textbox *ngSwitchCase="'text'" [field]="field" [form]="form"></textbox>
+        <datetextbox *ngSwitchCase="'datetext'" [field]="field" [form]="form"></datetextbox>
+        <dropdown *ngSwitchCase="'dropdown'" [field]="field" [form]="form"></dropdown>
+        <checkbox *ngSwitchCase="'checkbox'" [field]="field" [form]="form"></checkbox>
+        <radio *ngSwitchCase="'radio'" [field]="field" [form]="form"></radio>
+        <file *ngSwitchCase="'file'" [field]="field" [form]="form"></file>
+        <div class="alert alert-danger my-1 p-2 fadeInDown animated" *ngIf="!isValid && isTouched">
+            <div *ngIf="isRequired">{{field.label}} es requerido</div>
+            <div *ngIf="hasNotFormat">{{ field.label }} no tiene el formato correcto </div>
+            <div *ngIf="NoMatch">{{ field.label }} No match </div>
+        </div>
+    </div>
+</div>
