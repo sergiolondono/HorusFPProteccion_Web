@@ -93,6 +93,7 @@ export class ColasTrabajoComponent implements OnInit {
   @ViewChild("descarte") NgSelectModule;
   modalOptions: NgbModalOptions = {};
   pdfSrc: string | PDFSource | ArrayBuffer;
+
   @HostListener("window:keydown", ["$event"]) handleKeyboardEvent(e) {
     this.keypressed = e.keyCode;
     if (
@@ -241,6 +242,8 @@ export class ColasTrabajoComponent implements OnInit {
       .getLotes(colatrabajo, colaMsgQueue)
       .subscribe((datalote: {}) => {
         this.lote = datalote;
+        if(this.lote.valorimagenBytes ==="" && this.lote.tdocumentales.length === 0)
+          this.toastr.error("", "Cola de trabajo no configurada!");
 
         // valores del lote obtenido
         var binaryImg = atob(this.lote.valorimagenBytes);
@@ -258,7 +261,7 @@ export class ColasTrabajoComponent implements OnInit {
         this.pdfSrc = URL.createObjectURL(currentBlob);
 
         //renderiza la imagen de entrada a la pantalla
-        this.zoom = 0.4000000000000006;
+        this.zoom = 1;
         // llena la lista de tipos documentales
         this.tiposDocumentales = this.lote.tdocumentales;
         // devuelve el valor del tipodocumental ya seleccionado para el lote

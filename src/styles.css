@@ -18,6 +18,7 @@ legend.scheduler-border {
 
 body {
     background-color: #fff !important;
+    padding-bottom: 2%;
 }
 
 .text-white {
@@ -2839,3 +2840,9 @@ h3.h3 {
   .py-3 {
     padding-top: 1rem !important;
   }
+
+  .scrollformdinamico{
+    height: 55%; 
+    overflow-y: scroll;
+    margin-bottom: 2%;
+  } 

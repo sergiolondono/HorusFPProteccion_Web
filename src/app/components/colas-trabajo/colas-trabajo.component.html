@@ -1,11 +1,8 @@
 <div class="p-2">
     <div class="row m-2">
-
         <ng-template #modalDescarte let-modal>
-
             <div class="modal-header">
                 <h5 class="modal-title" id="exampleModalLongTitle">Descarte Tipo Documental</h5>
-
             </div>
             <div class="modal-body">
                 <ng-select *ngIf="motivosDescarte" [items]="motivosDescarte" bindLabel="labelMotivo" bindValue="motivo" style="width: 100%" [(ngModel)]="motivoSelected" placeholder="Motivo Descarte"></ng-select>
@@ -14,28 +11,16 @@
                 <button type="button" class="btn btn-secondary" (click)="CerrarModal()">Cerrar</button>
                 <button type="button" class="btn btn-primary" (click)="guardarDescarte()">Guardar</button>
             </div>
-
-
         </ng-template>
-
         <ng-select *ngIf="colas" [items]="colas" bindLabel="nombreCola" bindValue="idCola" (change)="onChange($event)" style="width: 25%" placeholder="Colas trabajo" #ngselect1>
         </ng-select>
-
     </div>
-
-
 
     <div class="row m-2">
         <div class=" m-1 badge badge-light" *ngIf="imagen">
-
             <span><b>NombreDocumento:</b>  {{ NombreDocumento}}   //    <b>IdLote: </b>  {{ IdLote}}   //   <b>IdDocumento:</b>   {{ IdDocumento }}</span>
-
-
-
         </div>
-
         <div *ngIf="!imagen" class="container">
-
             <br><br>
             <h3 class="h3"></h3>
             <div class="row">
@@ -43,10 +28,7 @@
                     <div class="loader16"></div>
                 </div>
             </div>
-
         </div>
-
-
         <div *ngIf="imagen" class="col col-md-8 col-md-8">
             <input (change)="onFileSelected()" type="file" id="file" class="d-none" accept=".pdf" />
             <div class="toolbar d-flex">
@@ -84,12 +66,10 @@
                             </ul>
                         </li>
                     </ul>
-                </div>
-
-
+                </div>                
                 <pdf-viewer (keydown)="onKeyDown($event)" [src]="pdfSrc" [(page)]="page" [rotation]="rotation" [original-size]="originalSize" [fit-to-page]="fitToPage" (after-load-complete)="afterLoadComplete($event)" [zoom]="zoom" [show-all]="showAll" [stick-to-page]="stickToPage"
-                    [render-text]="renderText" [external-link-target]="'blank'" [autoresize]="autoresize" (error)="onError($event)" (on-progress)="onProgress($event)" (page-rendered)="pageRendered($event)" style="display: block;"></pdf-viewer>
-            </div>
+                    [render-text]="renderText" [external-link-target]="'blank'" [autoresize]="autoresize" (error)="onError($event)" (on-progress)="onProgress($event)" (page-rendered)="pageRendered($event)" style="display: block; height: 70vh; overflow-y: scroll;"></pdf-viewer>                
+                </div>
         </div>
 
         <div *ngIf="imagen" class="col col-md-4 col-md-4">
@@ -109,12 +89,9 @@
             </div>
             <br>
 
-            <div *ngIf="idTemplateSelected">
-
+            <div *ngIf="idTemplateSelected" class="scrollformdinamico">
                 <dynamic-form-builder (onSubmit)="displayform($event)" [fields]="fields"></dynamic-form-builder>
-
             </div>
-
         </div>
 
     </div>
