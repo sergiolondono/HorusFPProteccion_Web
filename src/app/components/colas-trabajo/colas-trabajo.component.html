@@ -1,21 +1,24 @@
 <div class="p-2">
     <div class="row m-2">
 
+        <ng-template #modalDescarte let-modal>
 
-        <!-- Split dropright button -->
-        <!-- <div ngbDropdown class="btn-group dropright">
-      <button type="button" class="btn btn-primary">
-        Colas Trabajo
-      </button>
-      <button ngbDropdownToggle type="button" class="btn btn-primary dropdown-toggle dropdown-toggle-split" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-        <span class="sr-only"></span>
-      </button>
-      <ul *ngFor="let item of colas">
-          <li> {{item.idCola}}</li>
-      </ul> -->
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLongTitle">Descarte Tipo Documental</h5>
+
+            </div>
+            <div class="modal-body">
+                <ng-select *ngIf="motivosDescarte" [items]="motivosDescarte" bindLabel="labelMotivo" bindValue="motivo" style="width: 100%" [(ngModel)]="motivoSelected" placeholder="Motivo Descarte"></ng-select>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" (click)="CerrarModal()">Cerrar</button>
+                <button type="button" class="btn btn-primary" (click)="guardarDescarte()">Guardar</button>
+            </div>
+
+
+        </ng-template>
+
         <ng-select *ngIf="colas" [items]="colas" bindLabel="nombreCola" bindValue="idCola" (change)="onChange($event)" style="width: 25%" placeholder="Colas trabajo" #ngselect1>
-
-
         </ng-select>
 
     </div>
@@ -42,24 +45,9 @@
             </div>
 
         </div>
-        <!-- <div *ngIf="!imagen" class="container">
-            <br/><br/>
-            <h3 class="h3">Preloader Demo - 8</h3>
-            <div class="row">
-                <div class="col-md-12">
-                    <div class="loader8">
-                        <div class="loader-inner"></div>
-                    </div>
-                </div>
-            </div>
-            <br/><br/>
-        </div> -->
+
 
         <div *ngIf="imagen" class="col col-md-8 col-md-8">
-            <!-- <app-image-viewer [images]="['iVBORw0KGgoAAAANSUhEUgAAAAUAAAAFCAYAAACNbyblAAAAHElEQVQI12P4//8/w38GIAXDIBKE0DHxgljNBAAO9TXL0Y4OHwAAAABJRU5ErkJggg==', 'https://picsum.photos/900/500/?random']" [idContainer]="'idOnHTML'" [loadOnInit]="true"></app-image-viewer> -->
-            <!-- <app-image-viewer [images]="[lote.valorimagenBytes,'https://picsum.photos/900/500/?random']" [idContainer]="'idOnHTML'" [loadOnInit]="true"></app-image-viewer> -->
-            <!-- <app-image-viewer [images]="['iVBORw0KGgoAAAANSUhEUgAAAAUAAAAFCAYAAACNbyblAAAAHElEQVQI12P4//8/w38GIAXDIBKE0DHxgljNBAAO9TXL0Y4OHwAAAABJRU5ErkJggg==', 'https://picsum.photos/900/500/?random']" [idContainer]="'idOnHTML'" [loadOnInit]="true"></app-image-viewer> -->
-            <!-- <app-image-viewer [images]="[imagen]" [download]=false [showOptions]=true [showPDFOnlyOption]=true [idContainer]="'idOnHTML'" [loadOnInit]="true"></app-image-viewer> -->
             <input (change)="onFileSelected()" type="file" id="file" class="d-none" accept=".pdf" />
             <div class="toolbar d-flex">
                 <!-- <span class="my-icon" [inlineSVG]="'/assets/icon/baseline-open_in_browser-24px.svg'" (click)="openLocalFile()" title="Open File"></span> -->
@@ -127,37 +115,6 @@
 
             </div>
 
-            <!-- <div *ngIf="form.valid">
-                <button type="submit" [disabled]="!form.valid" class="btn btn-outline-primary btn-block">Guardar</button>
-                <strong >Saved all values</strong>-->
-
-
-            <!-- <h3 class="title">Tipo Documento: </h3>
-                <select class="form-control form-control-lg" #identificacion>
-          <option></option>
-          <option>Cedula de ciudadania</option>
-          <option>Cedula Extranjeria</option>
-          <option>Pasaporte</option>
-
-        </select> -->
-            <!-- 
-                <div class="form-group">
-
-                    <h3 class="title">Fecha Expedición:</h3>
-                    <input type="text" class="form-control" (keyup)="onKey($event)" id="exampleFormControlInput1" placeholder="DD/MM/YYYY">
-                </div>
-                <div class="form-group">
-
-                    <h3 class="title">Numero Documento:</h3>
-                    <input type="text" class="form-control" (keyup)="onKey($event)" id="exampleFormControlInput1">
-                </div>
-                <div class="form-group">
-
-                    <h3 class="title">Identificador Fisico:</h3>
-                    <input type="text" class="form-control" id="exampleFormControlInput1">
-                </div>
-                <button (click)="guardar()" type="button" class="btn btn-outline-primary btn-block">Guardar</button> -->
-            <!-- </div> -->
         </div>
 
     </div>

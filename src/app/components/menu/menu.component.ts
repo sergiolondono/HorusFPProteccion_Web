@@ -11,11 +11,12 @@ import { map, take } from 'rxjs/operators';
   styleUrls: ['./menu.component.css']
 })
 export class MenuComponent implements OnInit {
-  usuario:Observable<boolean>;
+  authenticate: any;
   isLoggedIn$: Observable<boolean>;
-  constructor( private router:Router, private activatedRoute:ActivatedRoute,private service:DocumentsService) {
+
+  constructor( private router:Router, private activatedRoute:ActivatedRoute,public service:DocumentsService) {
     
- 
+     
 
 
     
@@ -23,11 +24,11 @@ export class MenuComponent implements OnInit {
    }
 
   ngOnInit() {
- 
-    // this.isLoggedIn$ = this.service.isLoggedIn;
-    
+
+    this.authenticate = localStorage.getItem("userName");
   }
-  onLogout() {
-    // this.service.logout();
+  Logout() {
+    localStorage.clear();
+    this.router.navigateByUrl("/Login");
   }
 }
