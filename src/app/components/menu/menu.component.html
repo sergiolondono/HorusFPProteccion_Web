@@ -14,25 +14,26 @@
                 <a class="nav-link " [routerLink]="['home']">HorusWeb</a>
             </li>
             <li class="nav-item ">
-                <a class="nav-link " [routerLink]="['login']">Login </a>
+                <a class="nav-link " *ngIf="!service.isloggedin()" [routerLink]="['Login']">Login </a>
             </li>
 
 
             <li ngbDropdown class="nav-item dropdown " style="Width:40%">
-                <a ngbDropdownToggle class="nav-link dropdown-toggle " id="navbarDropdown " role="button " data-toggle="dropdown " aria-haspopup="true " aria-expanded="false ">
+                <a ngbDropdownToggle class="nav-link dropdown-toggle " *ngIf="service.isloggedin()" id="navbarDropdown " role="button " data-toggle="dropdown " aria-haspopup="true " aria-expanded="false ">
         Proceso 
       </a>
                 <div ngbDropdownMenu class="dropdown-menu dropright " aria-labelledby="navbarDropdown ">
                     <a class="dropdown-item " [routerLink]="['colas']">Indexacion</a>
-                    <a class="dropdown-item " href="# ">Another action</a>
+                    <!-- <a class="dropdown-item " href="# ">Another action</a>
                     <div class="dropdown-divider "></div>
-                    <a class="dropdown-item " href="# ">Something else here</a>
+                    <a class="dropdown-item " href="# ">Something else here</a> -->
                 </div>
             </li>
 
         </ul>
         <form class="form-inline my-2 my-lg-0 ">
-            <button class="btn btn-outline-primary my-2 my-sm-0 " type="submit" (click)="onLogout()">Salir</button>
+            <!-- <button type="button" class="btn btn-default btn-lg"><span class="glyphicon glyphicon-star" aria-hidden="true"></span> Salir</button> -->
+            <button class="btn btn-outline-primary my-2 my-sm-0 " (click)="Logout()" type="submit">Salir</button>
         </form>
     </div>
 </nav>

@@ -1,9 +1,10 @@
-import { Component, ViewChild,OnInit,HostListener, ElementRef, Renderer } from '@angular/core';
+import { Component, ViewChild,OnInit,HostListener, ElementRef,EventEmitter, Renderer,Input,Output } from '@angular/core';
 import {DocumentsService} from '../../documents.service';
 import {ActivatedRoute} from '@angular/router';
 import { ImageViewerModule } from 'ng2-image-viewer';
 import { ToastrService } from 'ngx-toastr';
-import { NgSelectComponent } from '@ng-select/ng-select';
+import { NgSelectComponent, NgSelectModule } from '@ng-select/ng-select';
+import { NgbModal, NgbModalOptions } from '@ng-bootstrap/ng-bootstrap';
 import { FormGroup, FormControl,ReactiveFormsModule } from '@angular/forms';
 import { HttpClient, HttpHeaders, HttpErrorResponse } from '@angular/common/http';
 import {
@@ -12,7 +13,7 @@ import {
   PDFDocumentProxy,
   PDFSource,
 } from 'ng2-pdf-viewer';
-import { interval } from 'rxjs';
+
 
 
 @Component({
@@ -57,50 +58,67 @@ export class ColasTrabajoComponent implements OnInit {
   template:any=[];
   NombreDocumento;
   IdLote;
+  imagen ; 
   colatrabajo;
   colamsg;
   IdDocumento;
+  procesoOK:any;
   ArrayTemplate:any = [];
   guardarlote:any = [];
   src$:any ;
   title = "HorusWebAngular";
+  authenticate:any;
+  motivosDescarte:any=[];
+  categoria:any;
+  motivoSelected:any;
 
   // variable que escucha cualquier tecla digitada. sirve para renderizar la imagen
   public keypressed;
 
   // se declaran para hacer focus en el ngselect1 de colas al inicio del componente.
   @ViewChild('ngselect1') select: NgSelectComponent;
-  @ViewChild("campos") formulario : NgSelectComponent;
-
+  @ViewChild('campos') formulario : NgSelectComponent;
+  @ViewChild('modalDescarte') modaldescarte:ElementRef ;
+  @ViewChild('descarte') NgSelectModule;
+  modalOptions: NgbModalOptions = {};
   pdfSrc: string | PDFSource | ArrayBuffer;
-  @HostListener('window:keydown', ['$event'])
-handleKeyboardEvent(event: KeyboardEvent) {
-  this.keypressed = event.keyCode;
-  if((this.keypressed == 189 || this.keypressed == 109) && this.pdfSrc != "" )
+  @HostListener('window:keydown', ['$event'])handleKeyboardEvent(e) {
+  this.keypressed = e.keyCode;
+  if(((e.shiftKey && this.keypressed == 189) || (e.shiftKey && this.keypressed == 109)) && this.pdfSrc != "" )
   {
      this.zoom += -0.1;
   }
-  if((this.keypressed == 107 || this.keypressed == 187) && this.pdfSrc != "" )
+  if(((e.shiftKey && this.keypressed == 107) || (e.shiftKey &&this.keypressed == 187)) && this.pdfSrc != "" )
   {
      this.zoom += 0.1;
   }
-  if(this.keypressed == 37 && this.pdfSrc != "" )
+  if((e.shiftKey && this.keypressed == 37) && this.pdfSrc != "" )
   {
      this.rotation += -90;
   }
-  if(this.keypressed == 39 && this.pdfSrc != "" )
+  if((e.shiftKey &&this.keypressed == 39) && this.pdfSrc != "" )
   {
      this.rotation += 90;
   }
+  if((e.altKey &&  this.keypressed == 114) && this.pdfSrc != "" )
+  {
+    this.modalOptions.backdrop='static';
+    this.modalOptions.keyboard=false;
+
+    this.modalService.open(this.modaldescarte,this.modalOptions);
+
+  }
   console.log(this.keypressed);
-  // this.zoom += 0.1;
+
 }
   
-  imagen ; 
+  
 
-  constructor(private toastr: ToastrService,private renderer: Renderer,private activatedRoute:ActivatedRoute, private restService: DocumentsService, private image:ImageViewerModule ) { 
+  constructor(private toastr: ToastrService,private renderer: Renderer,  private modalService: NgbModal,private activatedRoute:ActivatedRoute, private restService: DocumentsService, private image:ImageViewerModule ) { 
 
     this.getColas();     
+    
+    this.getMotivosDescarte();
 
   }
 
@@ -118,48 +136,93 @@ onChange($event) {
 
  
 }
+CerrarModal()
+{
+  this.modalService.dismissAll(this.modaldescarte);
+}
+
+guardarDescarte()
+{
+  this.imagen = false;
+  this.mostrarFormulario = false;
+
+   let datoslote = {
+    datosFormulario : "",
+    idlote:this.IdLote,
+    idDocumento :this.IdDocumento,
+    idtipodoc: this.idTipoDocSelected,
+    idtempla: this.idTemplateSelected,
+    usuario: localStorage.getItem("usuario"),
+    proceso:'captura',
+    categoria:'indexacion',
+    motivoDescarte:this.motivoSelected
+  
+  }
+
+  // console.log(datoslote.motivoDescarte);
+  
+  this.guardarlote = this.restService.postGuardarLote(datoslote).subscribe((dataguardar: {}) => {
+  this.procesoOK = dataguardar;
+  if(this.procesoOK)
+  {
+    this.showSuccessDescarte();
+    this.CerrarModal();
+    this.getLotes(this.colatrabajo,this.colamsg);
+    
+  }
+  else{
+    this.showErrorDescarte();
+  }
+  
+
+  } );
+}
 
 displayform(f) {
-  // You don't really need to pass the click event, you can just pass new Event() or '{} as Event' even.
-  console.log(f);
-  console.log(this.fields);
-  // let datosLote = {
-  //   fecha :f.xFechaExpedicion,
-  //   NIdentificacion:f.xNumeroIdentificacion,
-  //   tipodocumento:f.xTipoDocumentoIdentificacion,
-  //   identificadorfisico:"123",
-  //   idlote:this.IdLote,
-  //   idDocumento :this.IdDocumento,
-  //   idtipodoc: this.idTipoDocSelected,
-  //   idtempla: this.idTemplateSelected
+ 
+  this.imagen = false;
+  this.mostrarFormulario = false;
+            console.log(f);
+   let datoslote = {
+    datosFormulario : f,
+    idlote:this.IdLote,
+    idDocumento :this.IdDocumento,
+    idtipodoc: this.idTipoDocSelected,
+    idtempla: this.idTemplateSelected,
+    usuario: localStorage.getItem("usuario"),
+    proceso:'captura',
+    categoria:'indexacion',
+    movitoDescarte:""
   
-  // }
-  console.log(f);
-  let lote = {
-    NIdentificacion: "1",
-    fecha: "06/10/2019",
-    idDocumento: 139245411,
-    identificadorfisico: "123",
-    idlote: 31771887,
-    idtempla: 1188,
-    idtipodoc: 1472,
-    tipodocumento: "Cedula de Ciudadania"
-    } 
-    // return this.http.post(endpoint + 'Lote/guardar', lote)
-    // .subscribe(data => { console.log("POST Request Lote", data) },
-    // error => { console.log("Error", error) }
+  }
   
-    // );
-  this.guardarlote = this.restService.postGuardarLote(lote);
-    // {
-    //   this.showSuccess();
-    // }
-    // else
-    // {
-    //   this.showError();
-    // }
+  this.guardarlote = this.restService.postGuardarLote(datoslote).subscribe((dataguardar: {}) => {
+  this.procesoOK = dataguardar;
+  if(this.procesoOK)
+  {
+    this.showSuccess();
+    this.getLotes(this.colatrabajo,this.colamsg);
+  }
+  else{
+    this.showError();
+  }
+  
 
-  
+  } );
+
+
+}
+
+getMotivosDescarte()
+{
+  this.categoria = 'indexacion'
+  this.motivosDescarte = [];
+  this.restService.getMotivosDescarte(this.categoria).subscribe((data: {}) => {
+   
+    this.motivosDescarte = data;
+
+   console.log(this.motivosDescarte);
+  });
 }
 
 getColas() {
@@ -235,6 +298,14 @@ ngDistroy() {
 showSuccess() {
   this.toastr.success('', 'Lote Guardado Exitosamente!');
 }
+showSuccessDescarte()
+{
+  this.toastr.success('','Documento Descartado Exitosamente!');
+}
+showErrorDescarte()
+{
+  this.toastr.success('','Erro al descartar el documento!');
+}
 showError()
 {
   this.toastr.error('','Error al guardar el lote!')
@@ -259,8 +330,9 @@ onChangeTipoDocumental($event)
 }
 guardar( $event)
 {
-this.imagen = false;
+ this.imagen = false;
  this.mostrarFormulario = false;
+
  this.getLotes(this.colatrabajo,this.colamsg);
  this.showSuccess();
  

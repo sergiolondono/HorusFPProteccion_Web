@@ -1,13 +1,14 @@
 import {RouterModule, Routes } from '@angular/router'
 import {ColasTrabajoComponent} from './components/colas-trabajo/colas-trabajo.component';
+import {LoginComponent} from './components/login/login.component';
+import {AuthGuard} from './auth-guard.service';
 
 
 const APP_ROUTES: Routes = [
 
-    // { path: '', component:LoginComponent },
-    // { path: 'home', component: ConsumirComponent},
-     { path: 'colas', component:ColasTrabajoComponent},
-    // { path: 'Login', component:LoginComponent },
+
+     { path: 'colas', component:ColasTrabajoComponent,canActivate:[AuthGuard]},
+     { path: 'Login', component:LoginComponent },
     // { path: '**', pathMatch: 'full' , redirectTo:'home'}
 
 ];
