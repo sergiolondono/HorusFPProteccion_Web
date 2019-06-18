@@ -87,7 +87,7 @@ export class ColasTrabajoComponent implements OnInit {
   public keypressed;
 
   // se declaran para hacer focus en el ngselect1 de colas al inicio del componente.
-  @ViewChild("ngselect1") select: NgSelectComponent;
+  @ViewChild("ngselectColas") select: NgSelectComponent;
   @ViewChild("campos") formulario: NgSelectComponent;
   @ViewChild("modalDescarte") modaldescarte: ElementRef;
   @ViewChild("descarte") NgSelectModule;
@@ -243,7 +243,7 @@ export class ColasTrabajoComponent implements OnInit {
       .subscribe((datalote: {}) => {
         this.lote = datalote;
         if(this.lote.valorimagenBytes ==="" && this.lote.tdocumentales.length === 0)
-          this.toastr.error("", "Cola de trabajo no configurada!");
+          this.showWarning("Cola de trabajo no configurada!");
 
         // valores del lote obtenido
         var binaryImg = atob(this.lote.valorimagenBytes);
@@ -300,6 +300,10 @@ export class ColasTrabajoComponent implements OnInit {
   }
   showError() {
     this.toastr.error("", "Error al guardar el lote!");
+  }
+
+  showWarning(message){
+    this.toastr.warning("", message);
   }
 
   onKey(valor) {

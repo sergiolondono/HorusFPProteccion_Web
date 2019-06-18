@@ -12,7 +12,8 @@
                 <button type="button" class="btn btn-primary" (click)="guardarDescarte()">Guardar</button>
             </div>
         </ng-template>
-        <ng-select *ngIf="colas" [items]="colas" bindLabel="nombreCola" bindValue="idCola" (change)="onChange($event)" style="width: 25%" placeholder="Colas trabajo" #ngselect1>
+        <ng-select *ngIf="colas" [items]="colas" bindLabel="nombreCola" bindValue="idCola" 
+        (change)="onChange($event)" style="width: 25%" placeholder="Colas trabajo" #ngselectColas>
         </ng-select>
     </div>
 
