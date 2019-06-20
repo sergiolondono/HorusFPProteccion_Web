@@ -91,6 +91,7 @@ export class ColasTrabajoComponent implements OnInit {
   @ViewChild("campos") formulario: NgSelectComponent;
   @ViewChild("modalDescarte") modaldescarte: ElementRef;
   @ViewChild("descarte") NgSelectModule;
+  @ViewChild("pdfV") public target: ElementRef;
   modalOptions: NgbModalOptions = {};
   pdfSrc: string | PDFSource | ArrayBuffer;
 
@@ -116,13 +117,20 @@ export class ColasTrabajoComponent implements OnInit {
     if (e.shiftKey && this.keypressed == 39 && this.pdfSrc != "") {
       this.rotation += 90;
     }
+
+    if (e.shiftKey && this.keypressed == 73 && this.pdfSrc != "") {
+      this.target.nativeElement.scrollTop -= 20;
+    }
+    if (e.shiftKey && this.keypressed == 75 && this.pdfSrc != "") {
+      this.target.nativeElement.scrollTop += 20;
+    }
+
     if (e.altKey && this.keypressed == 114 && this.pdfSrc != "") {
       this.modalOptions.backdrop = "static";
       this.modalOptions.keyboard = false;
 
       this.modalService.open(this.modaldescarte, this.modalOptions);
-    }
-    console.log(this.keypressed);
+    }  
   }
 
   constructor(
@@ -306,10 +314,6 @@ export class ColasTrabajoComponent implements OnInit {
     this.toastr.warning("", message);
   }
 
-  onKey(valor) {
-    console.log(valor);
-  }
-
   consultarLoteDisponible() {
     this.mostrarimagen = true;
     this.mostrarFormulario = true;
@@ -380,7 +384,7 @@ export class ColasTrabajoComponent implements OnInit {
   }
   onKeyDown(e: any) {
     if (e.keyCode == 13 && e.ctrlKey) alert("Ctrl+Enter");
-    console.log(event);
+    //console.log(event);
   }
 
   rotate(angle: number) {
