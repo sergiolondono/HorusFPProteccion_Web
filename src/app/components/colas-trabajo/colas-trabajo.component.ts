@@ -4,36 +4,28 @@ import {
   OnInit,
   HostListener,
   ElementRef,
-  EventEmitter,
-  Renderer,
-  Input,
-  Output
+  Input
 } from "@angular/core";
 import { DocumentsService } from "../../documents.service";
-import { ActivatedRoute } from "@angular/router";
-import { ImageViewerModule } from "ng2-image-viewer";
-import { ToastrService } from "ngx-toastr";
-import { NgSelectComponent, NgSelectModule } from "@ng-select/ng-select";
+
+import { NgSelectComponent } from "@ng-select/ng-select";
 import { NgbModal, NgbModalOptions } from "@ng-bootstrap/ng-bootstrap";
-import { FormGroup, FormControl, ReactiveFormsModule } from "@angular/forms";
-import {
-  HttpClient,
-  HttpHeaders,
-  HttpErrorResponse
-} from "@angular/common/http";
+import { FormGroup, FormControl } from "@angular/forms";
+
 import {
   PDFProgressData,
   PdfViewerComponent,
   PDFDocumentProxy,
   PDFSource
 } from "ng2-pdf-viewer";
+import { MensajesService } from 'src/app/mensajes.service';
 
 @Component({
   selector: "app-colas-trabajo",
   templateUrl: "./colas-trabajo.component.html",
   styleUrls: ["./colas-trabajo.component.scss"]
 })
-export class ColasTrabajoComponent implements OnInit {
+export class ColasTrabajoComponent {
   // variables para formulario dinamico
   public form: FormGroup;
   unsubcribe: any;
@@ -95,58 +87,74 @@ export class ColasTrabajoComponent implements OnInit {
   modalOptions: NgbModalOptions = {};
   pdfSrc: string | PDFSource | ArrayBuffer;
 
-  @HostListener("window:keydown", ["$event"]) handleKeyboardEvent(e) {
+  constructor(
+    private toastr: MensajesService,
+    private modalService: NgbModal,
+    private restService: DocumentsService
+  ) {
+    this.getColas();
+    this.getMotivosDescarte();
+  }
+
+  @HostListener('paste', ['$event']) blockPaste(e: KeyboardEvent) {
+    e.preventDefault();
+  }
+
+  @HostListener('copy', ['$event']) blockCopy(e: KeyboardEvent) {
+    e.preventDefault();
+  }
+
+  @HostListener('cut', ['$event']) blockCut(e: KeyboardEvent) {
+    e.preventDefault();
+  }
+
+  @HostListener("window:keydown", ["$event"]) 
+  handleKeyboardEvent(e) {
     this.keypressed = e.keyCode;
+
+    enum keyAscii { k = 75, i = 73, menos = 109, menosInterno = 189, mas = 107,
+      masInterno = 187, flechaDerecha = 39, flechaIzquierda = 37, f3 = 114 };
+
     if (
-      ((e.shiftKey && this.keypressed == 189) ||
-        (e.shiftKey && this.keypressed == 109)) &&
+      ((e.shiftKey && this.keypressed == keyAscii.menosInterno) ||
+        (e.shiftKey && this.keypressed == keyAscii.menos )) &&
       this.pdfSrc != ""
     ) {
+      e.preventDefault();
       this.zoom += -0.1;
     }
     if (
-      ((e.shiftKey && this.keypressed == 107) ||
-        (e.shiftKey && this.keypressed == 187)) &&
+      ((e.shiftKey && this.keypressed == keyAscii.mas) ||
+        (e.shiftKey && this.keypressed == keyAscii.masInterno )) &&
       this.pdfSrc != ""
     ) {
+      e.preventDefault();
       this.zoom += 0.1;
     }
-    if (e.shiftKey && this.keypressed == 37 && this.pdfSrc != "") {
+    if (e.shiftKey && this.keypressed == keyAscii.flechaIzquierda && this.pdfSrc != "") {
       this.rotation += -90;
     }
-    if (e.shiftKey && this.keypressed == 39 && this.pdfSrc != "") {
+    if (e.shiftKey && this.keypressed == keyAscii.flechaDerecha && this.pdfSrc != "") {
       this.rotation += 90;
     }
 
-    if (e.shiftKey && this.keypressed == 73 && this.pdfSrc != "") {
+    if (e.shiftKey && this.keypressed == keyAscii.i && this.pdfSrc != "") {
+      e.preventDefault();
       this.target.nativeElement.scrollTop -= 20;
     }
-    if (e.shiftKey && this.keypressed == 75 && this.pdfSrc != "") {
+    if (e.shiftKey && this.keypressed == keyAscii.k && this.pdfSrc != "") {
+      e.preventDefault();
       this.target.nativeElement.scrollTop += 20;
     }
-
-    if (e.altKey && this.keypressed == 114 && this.pdfSrc != "") {
+    
+    if (e.altKey && this.keypressed == keyAscii.f3 && this.pdfSrc != "") {
       this.modalOptions.backdrop = "static";
       this.modalOptions.keyboard = false;
 
       this.modalService.open(this.modaldescarte, this.modalOptions);
     }  
+    console.log(this.keypressed);
   }
-
-  constructor(
-    private toastr: ToastrService,
-    private renderer: Renderer,
-    private modalService: NgbModal,
-    private activatedRoute: ActivatedRoute,
-    private restService: DocumentsService,
-    private image: ImageViewerModule
-  ) {
-    this.getColas();
-
-    this.getMotivosDescarte();
-  }
-
-  ngOnInit() {}
 
   onChange($event) {
     console.log($event);
@@ -155,6 +163,7 @@ export class ColasTrabajoComponent implements OnInit {
     this.imagen = "";
     this.getLotes($event.nombreCola, $event.colaMsgQueue);
   }
+
   CerrarModal() {
     this.modalService.dismissAll(this.modaldescarte);
   }
@@ -175,18 +184,17 @@ export class ColasTrabajoComponent implements OnInit {
       motivoDescarte: this.motivoSelected
     };
 
-    // console.log(datoslote.motivoDescarte);
-
     this.guardarlote = this.restService
       .postGuardarLote(datoslote)
       .subscribe((dataguardar: {}) => {
         this.procesoOK = dataguardar;
         if (this.procesoOK) {
-          this.showSuccessDescarte();
+          this.toastr.showSuccessDescarte();
           this.CerrarModal();
           this.getLotes(this.colatrabajo, this.colamsg);
-        } else {
-          this.showErrorDescarte();
+        } 
+        else {
+          this.toastr.showErrorDescarte();
         }
       });
   }
@@ -212,10 +220,10 @@ export class ColasTrabajoComponent implements OnInit {
       .subscribe((dataguardar: {}) => {
         this.procesoOK = dataguardar;
         if (this.procesoOK) {
-          this.showSuccess();
+          this.toastr.showSuccess();
           this.getLotes(this.colatrabajo, this.colamsg);
         } else {
-          this.showError();
+          this.toastr.showError();
         }
       });
   }
@@ -227,8 +235,6 @@ export class ColasTrabajoComponent implements OnInit {
       .getMotivosDescarte(this.categoria)
       .subscribe((data: {}) => {
         this.motivosDescarte = data;
-
-        console.log(this.motivosDescarte);
       });
   }
 
@@ -251,7 +257,7 @@ export class ColasTrabajoComponent implements OnInit {
       .subscribe((datalote: {}) => {
         this.lote = datalote;
         if(this.lote.valorimagenBytes ==="" && this.lote.tdocumentales.length === 0)
-          this.showWarning("Cola de trabajo no configurada!");
+          this.toastr.showWarning("Cola de trabajo no configurada!");
 
         // valores del lote obtenido
         var binaryImg = atob(this.lote.valorimagenBytes);
@@ -293,25 +299,8 @@ export class ColasTrabajoComponent implements OnInit {
       });
   }
 
-  ngDistroy() {
+  ngDestroy() {
     this.unsubcribe();
-  }
-
-  showSuccess() {
-    this.toastr.success("", "Lote Guardado Exitosamente!");
-  }
-  showSuccessDescarte() {
-    this.toastr.success("", "Documento Descartado Exitosamente!");
-  }
-  showErrorDescarte() {
-    this.toastr.success("", "Erro al descartar el documento!");
-  }
-  showError() {
-    this.toastr.error("", "Error al guardar el lote!");
-  }
-
-  showWarning(message){
-    this.toastr.warning("", message);
   }
 
   consultarLoteDisponible() {
@@ -322,13 +311,6 @@ export class ColasTrabajoComponent implements OnInit {
   onChangeTipoDocumental($event) {
     this.getTemplate($event.idTipoDocumental);
     console.log($event);
-  }
-  guardar($event) {
-    this.imagen = false;
-    this.mostrarFormulario = false;
-
-    this.getLotes(this.colatrabajo, this.colamsg);
-    this.showSuccess();
   }
 
   getTemplate(idTipoDocumental: any) {
@@ -358,15 +340,6 @@ export class ColasTrabajoComponent implements OnInit {
 
   @ViewChild(PdfViewerComponent) private pdfComponent: PdfViewerComponent;
 
-  private extractDataLote(res: Response) {
-    let body = res;
-    return body || {};
-  }
-  private extractDataTemplate(res: Response) {
-    let body = res;
-    return body || {};
-  }
-
   toggleOutline() {
     this.isOutlineShown = !this.isOutlineShown;
   }
@@ -381,10 +354,6 @@ export class ColasTrabajoComponent implements OnInit {
   incrementZoom(amount: number) {
     this.zoom += amount;
     console.log(this.zoom);
-  }
-  onKeyDown(e: any) {
-    if (e.keyCode == 13 && e.ctrlKey) alert("Ctrl+Enter");
-    //console.log(event);
   }
 
   rotate(angle: number) {
