@@ -1,7 +1,6 @@
 import { BrowserModule } from '@angular/platform-browser';
 import { NgModule } from '@angular/core';
 import { ImageViewerModule } from 'ng2-image-viewer';
-import { HttpClientModule } from '@angular/common/http';
  import {APP_ROUTING} from './app.routes';
  import { NgSelectModule } from '@ng-select/ng-select';
  import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
@@ -10,8 +9,10 @@ import { HttpClientModule } from '@angular/common/http';
  import { PdfViewerModule } from 'ng2-pdf-viewer';
  import { InlineSVGModule } from 'ng-inline-svg';
  import { DynamicFormBuilderModule } from './dynamic-form-builder/dynamic-form-builder.module';
- import { AuthHttp, AuthConfig, AUTH_PROVIDERS, provideAuth, AuthModule } from 'angular2-jwt';
- import { Http, RequestOptions } from '@angular/http';
+ //import { AuthHttp, AuthConfig, AUTH_PROVIDERS, provideAuth, AuthModule } from 'angular2-jwt';
+ 
+ import { JwtHelperService, JwtModule } from '@auth0/angular-jwt';
+ import { HttpClientModule } from '@angular/common/http';
 
 import { AppComponent } from './app.component';
 import { MenuComponent } from './components/menu/menu.component';
@@ -23,12 +24,14 @@ import {NgbModule,NgbModal} from '@ng-bootstrap/ng-bootstrap';
 import { FieldsFunctionalityService } from './fields-functionality.service';
 import {DocumentsService} from './documents.service';
 
+// export function authHttpServiceFactory(http: Http, options: RequestOptions) {
+//   return new AuthHttp(new AuthConfig({
+//     tokenGetter: (() => localStorage.getItem('token'))
+//   }), http, options);
+// }
 
-
-export function authHttpServiceFactory(http: Http, options: RequestOptions) {
-  return new AuthHttp(new AuthConfig({
-    tokenGetter: (() => localStorage.getItem('token'))
-  }), http, options);
+export function tokenGetter() {
+  return localStorage.getItem('token');
 }
 
 @NgModule({
@@ -37,13 +40,25 @@ export function authHttpServiceFactory(http: Http, options: RequestOptions) {
     MenuComponent,
     ColasTrabajoComponent,
     LoginComponent
-    // ,
-    // MenuComponent
   ],
   imports: [
+    // AuthModule.forRoot(new AuthConfig({
+    //   headerName: 'Authorization',
+    //   headerPrefix: 'Bearer',
+    //   tokenName: 'token',
+    //   tokenGetter: (() => localStorage.getItem('token') || ''),
+    //   globalHeaders: [{ 'Content-Type': 'application/json' }],
+    //   noJwtError: true
+    // })),
     BrowserModule,
     ImageViewerModule,
     HttpClientModule,
+    JwtModule.forRoot({
+      config: {
+        tokenGetter: tokenGetter,
+        whitelistedDomains: ['localhost:56121']
+      }
+    }),
     NgSelectModule,
      APP_ROUTING,
      BrowserAnimationsModule,
@@ -53,19 +68,17 @@ export function authHttpServiceFactory(http: Http, options: RequestOptions) {
      FormsModule,
      ReactiveFormsModule,
      DynamicFormBuilderModule,
-     NgbModule.forRoot(),
-     AuthModule.forRoot(new AuthConfig({
-      headerName: 'Authorization',
-      headerPrefix: 'Bearer',
-      tokenName: 'token',
-      tokenGetter: (() => localStorage.getItem('token') || ''),
-      globalHeaders: [{ 'Content-Type': 'application/json' }],
-      noJwtError: true
-    }))
-    
+     NgbModule.forRoot()    
   ],
-  providers: [FieldsFunctionalityService,DocumentsService,AuthHttp],
+  providers: [
+    //AuthHttp, 
+    FieldsFunctionalityService, 
+    DocumentsService
+  ],
   bootstrap: [AppComponent]
 })
+
 export class AppModule { }
+
+
 

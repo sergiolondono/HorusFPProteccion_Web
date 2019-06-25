@@ -1,113 +1,113 @@
-import { Injectable } from '@angular/core';
-import { HttpClient, HttpHeaders, HttpErrorResponse } from '@angular/common/http';
-import { Observable, of } from 'rxjs';
-import { map, catchError, tap } from 'rxjs/operators';
+import { Injectable } from "@angular/core";
+import {
+  HttpClient,
+  HttpHeaders,
+  HttpErrorResponse
+} from "@angular/common/http";
+import { Observable, of } from "rxjs";
+import { map, catchError, tap } from "rxjs/operators";
 
-
-
-const endpoint1 = 'http://localhost:56121/api/';
-const endpoint = 'http://localhost:56121/api/';
+const endpoint1 = "http://localhost:56121/api/";
+const endpoint = "http://localhost:56121/api/";
 
 //const endpoint = 'http://172.20.15.127/WebApiSegura/api/';
-const httpOptions = {
-
-};
+const httpOptions = {};
 
 @Injectable({
-  providedIn: 'root'
+  providedIn: "root"
 })
 export class DocumentsService {
+  httpOptions = {
+    headers: new HttpHeaders({
+      "Content-Type": "application/json"
+    })
+  };
 
-
- httpOptions = {
-  headers: new HttpHeaders({
-   "Content-Type":"application/json",
-
-  
-  })
-};
-
-
-private extractDataTemplate(res: Response) {
-  let body = res;
-  return body || { };
-}
-
-private extractData(res: Response) {
-  let body = res;
-  return body || { };
-}
-private extractDataLote(res: Response) {
-  let body = res;
-  return body || { };
-}
-private extractGuardarlote(res:Response)
-{
-  let body = res;
-  return body || {};
-}
- constructor(private http: HttpClient) { }
-
-
- getColas(): Observable<any> {
-    return this.http.get(endpoint+"cargueinicial/ConsultaColasIndexacion",httpOptions).pipe(
-      map(this.extractData));
+  private extractDataTemplate(res: Response) {
+    let body = res;
+    return body || {};
   }
 
-
-  getMotivosDescarte(modulo):Observable<any>{
-    return this.http.get(endpoint+"cargueinicial/MotivosDescarte?modulo="+modulo,this.httpOptions).pipe(
-      map(this.extractData)
-    );
+  private extractData(res: Response) {
+    let body = res;
+    return body || {};
+  }
+  private extractDataLote(res: Response) {
+    let body = res;
+    return body || {};
   }
 
-  getTemplate(idTipoDocumental)
-  {
-    return this.http.get(endpoint+ 'TipoDocXTemplate/getTemplate?idTipoDocumental='+idTipoDocumental,httpOptions).pipe(
-      map(this.extractDataTemplate));
+  private extractGuardarlote(res: Response) {
+    let body = res;
+    return body || {};
   }
-  
-  getLotes( nombreCola,colaMsgqueue)
-  {
-     let usuario = localStorage.getItem("usuario");
-    return this.http.get(endpoint+ 'Lote/obtenerLoteIndexacion?colaTrabajo='+nombreCola+'&colaMsgQueue='+colaMsgqueue+'&usuario='+usuario,httpOptions).pipe(
-      map(this.extractDataLote));
+
+  constructor(private http: HttpClient) {}
+
+  getColas(): Observable<any> {
+    return this.http
+      .get(endpoint + "cargueinicial/ConsultaColasIndexacion", httpOptions)
+      .pipe(map(this.extractData));
   }
-  postGuardarLote(datosLote)
-  {
+
+  getMotivosDescarte(modulo): Observable<any> {
+    return this.http
+      .get(
+        endpoint + "cargueinicial/MotivosDescarte?modulo=" + modulo,
+        this.httpOptions
+      )
+      .pipe(map(this.extractData));
+  }
+
+  getTemplate(idTipoDocumental) {
+    return this.http
+      .get(
+        endpoint +
+          "TipoDocXTemplate/getTemplate?idTipoDocumental=" +
+          idTipoDocumental,
+        httpOptions
+      )
+      .pipe(map(this.extractDataTemplate));
+  }
+
+  getLotes(nombreCola, colaMsgqueue) {
+    let usuario = localStorage.getItem("usuario");
+    return this.http
+      .get(
+        endpoint +
+          "Lote/obtenerLoteIndexacion?colaTrabajo=" +
+          nombreCola +
+          "&colaMsgQueue=" +
+          colaMsgqueue +
+          "&usuario=" +
+          usuario,
+        httpOptions
+      )
+      .pipe(map(this.extractDataLote));
+  }
+  postGuardarLote(datosLote) {
     console.log(datosLote);
     let json = JSON.stringify(datosLote);
-       
     //El backend recogerá un parametro json
+    console.log(this.httpOptions);
 
-  console.log(this.httpOptions)
-
-    let params = "json="+json;
-    return this.http.post(endpoint1 + 'Lote/guardar', datosLote,this.httpOptions).pipe(map(this.extractData));
-   
-
-
+    let params = "json=" + json;
+    return this.http
+      .post(endpoint1 + "Lote/guardar", datosLote, this.httpOptions)
+      .pipe(map(this.extractData));
   }
 
-isloggedin()
-{
-    if(localStorage.getItem("usuario") != null) 
-    return true;
+  isloggedin() {
+    if (localStorage.getItem("usuario") != null) return true;
 
     return false;
+  }
+
+  GuardarLote() {}
+  
 }
 
-
-GuardarLote(){
-
-} 
- 
-
-
-  
-  }
-
-  export interface User {
-    userName: string;
-    password: string;
-  }
+export interface User {
+  userName: string;
+  password: string;
+}
