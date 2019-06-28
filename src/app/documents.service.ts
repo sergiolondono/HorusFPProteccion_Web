@@ -7,10 +7,9 @@ import {
 import { Observable, of } from "rxjs";
 import { map, catchError, tap } from "rxjs/operators";
 
-const endpoint1 = "http://localhost:56121/api/";
 const endpoint = "http://localhost:56121/api/";
+//const endpoint = "http://192.168.213.196:8080/HorusFPService/api/";
 
-//const endpoint = 'http://172.20.15.127/WebApiSegura/api/';
 const httpOptions = {};
 
 @Injectable({
@@ -93,7 +92,7 @@ export class DocumentsService {
 
     let params = "json=" + json;
     return this.http
-      .post(endpoint1 + "Lote/guardar", datosLote, this.httpOptions)
+      .post(endpoint + "Lote/guardar", datosLote, this.httpOptions)
       .pipe(map(this.extractData));
   }
 

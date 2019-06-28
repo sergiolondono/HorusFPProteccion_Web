@@ -56,7 +56,7 @@ export function tokenGetter() {
     JwtModule.forRoot({
       config: {
         tokenGetter: tokenGetter,
-        whitelistedDomains: ['localhost:56121']
+        whitelistedDomains: ['localhost:56121', '192.168.213.196:8080']
       }
     }),
     NgSelectModule,

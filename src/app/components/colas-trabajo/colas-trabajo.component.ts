@@ -18,7 +18,7 @@ import {
   PDFDocumentProxy,
   PDFSource
 } from "ng2-pdf-viewer";
-import { MensajesService } from 'src/app/mensajes.service';
+import { MensajesService } from "src/app/mensajes.service";
 
 @Component({
   selector: "app-colas-trabajo",
@@ -96,28 +96,37 @@ export class ColasTrabajoComponent {
     this.getMotivosDescarte();
   }
 
-  @HostListener('paste', ['$event']) blockPaste(e: KeyboardEvent) {
+  @HostListener("paste", ["$event"]) blockPaste(e: KeyboardEvent) {
     e.preventDefault();
   }
 
-  @HostListener('copy', ['$event']) blockCopy(e: KeyboardEvent) {
+  @HostListener("copy", ["$event"]) blockCopy(e: KeyboardEvent) {
     e.preventDefault();
   }
 
-  @HostListener('cut', ['$event']) blockCut(e: KeyboardEvent) {
+  @HostListener("cut", ["$event"]) blockCut(e: KeyboardEvent) {
     e.preventDefault();
   }
 
-  @HostListener("window:keydown", ["$event"]) 
+  @HostListener("window:keydown", ["$event"])
   handleKeyboardEvent(e) {
     this.keypressed = e.keyCode;
 
-    enum keyAscii { k = 75, i = 73, menos = 109, menosInterno = 189, mas = 107,
-      masInterno = 187, flechaDerecha = 39, flechaIzquierda = 37, f3 = 114 };
+    enum keyAscii {
+      k = 75,
+      i = 73,
+      menos = 109,
+      menosInterno = 189,
+      mas = 107,
+      masInterno = 187,
+      flechaDerecha = 39,
+      flechaIzquierda = 37,
+      f3 = 114
+    }
 
     if (
       ((e.shiftKey && this.keypressed == keyAscii.menosInterno) ||
-        (e.shiftKey && this.keypressed == keyAscii.menos )) &&
+        (e.shiftKey && this.keypressed == keyAscii.menos)) &&
       this.pdfSrc != ""
     ) {
       e.preventDefault();
@@ -125,16 +134,24 @@ export class ColasTrabajoComponent {
     }
     if (
       ((e.shiftKey && this.keypressed == keyAscii.mas) ||
-        (e.shiftKey && this.keypressed == keyAscii.masInterno )) &&
+        (e.shiftKey && this.keypressed == keyAscii.masInterno)) &&
       this.pdfSrc != ""
     ) {
       e.preventDefault();
       this.zoom += 0.1;
     }
-    if (e.shiftKey && this.keypressed == keyAscii.flechaIzquierda && this.pdfSrc != "") {
+    if (
+      e.shiftKey &&
+      this.keypressed == keyAscii.flechaIzquierda &&
+      this.pdfSrc != ""
+    ) {
       this.rotation += -90;
     }
-    if (e.shiftKey && this.keypressed == keyAscii.flechaDerecha && this.pdfSrc != "") {
+    if (
+      e.shiftKey &&
+      this.keypressed == keyAscii.flechaDerecha &&
+      this.pdfSrc != ""
+    ) {
       this.rotation += 90;
     }
 
@@ -146,13 +163,13 @@ export class ColasTrabajoComponent {
       e.preventDefault();
       this.target.nativeElement.scrollTop += 20;
     }
-    
+
     if (e.altKey && this.keypressed == keyAscii.f3 && this.pdfSrc != "") {
       this.modalOptions.backdrop = "static";
       this.modalOptions.keyboard = false;
 
       this.modalService.open(this.modaldescarte, this.modalOptions);
-    }  
+    }
     console.log(this.keypressed);
   }
 
@@ -192,8 +209,7 @@ export class ColasTrabajoComponent {
           this.toastr.showSuccessDescarte();
           this.CerrarModal();
           this.getLotes(this.colatrabajo, this.colamsg);
-        } 
-        else {
+        } else {
           this.toastr.showErrorDescarte();
         }
       });
@@ -256,7 +272,10 @@ export class ColasTrabajoComponent {
       .getLotes(colatrabajo, colaMsgQueue)
       .subscribe((datalote: {}) => {
         this.lote = datalote;
-        if(this.lote.valorimagenBytes ==="" && this.lote.tdocumentales.length === 0)
+        if (
+          this.lote.valorimagenBytes === "" &&
+          this.lote.tdocumentales.length === 0
+        )
           this.toastr.showWarning("Cola de trabajo no configurada!");
 
         // valores del lote obtenido

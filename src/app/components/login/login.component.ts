@@ -12,8 +12,10 @@ import { HttpClient, HttpHeaders } from "@angular/common/http";
 export class LoginComponent implements OnInit {
   form: FormGroup;
   private formSubmitAttempt: boolean;
-  //endpoint = 'http://172.20.15.127/WebApiSegura/api/';
+ 
   endpoint = "http://localhost:56121/api/";
+  //endpoint = "http://192.168.213.196:8080/HorusFPService/api/"; 
+
   token;
   constructor(
     private router: Router,
