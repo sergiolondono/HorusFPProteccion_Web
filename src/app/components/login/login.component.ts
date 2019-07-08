@@ -3,6 +3,7 @@ import { Router } from "@angular/router";
 import { FormBuilder, FormGroup, Validators } from "@angular/forms";
 import { ToastrService } from "ngx-toastr";
 import { HttpClient, HttpHeaders } from "@angular/common/http";
+import { environment } from 'src/environments/environment';
 
 @Component({
   selector: "app-login",
@@ -13,8 +14,8 @@ export class LoginComponent implements OnInit {
   form: FormGroup;
   private formSubmitAttempt: boolean;
  
-  endpoint = "http://localhost:56121/api/";
-  //endpoint = "http://192.168.213.196:8080/HorusFPService/api/"; 
+  //endpoint = "http://localhost:56121/api/";
+  APIEndpoint = environment.APIEndpoint;
 
   token;
   constructor(
@@ -50,7 +51,7 @@ export class LoginComponent implements OnInit {
 
     if (this.form.valid) {
       return this.http
-        .post(this.endpoint + "login/authenticate", credentials)
+        .post(this.APIEndpoint + "login/authenticate", credentials)
         .subscribe(
           data => {
             this.token = data;

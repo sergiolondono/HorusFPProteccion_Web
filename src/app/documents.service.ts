@@ -6,9 +6,10 @@ import {
 } from "@angular/common/http";
 import { Observable, of } from "rxjs";
 import { map, catchError, tap } from "rxjs/operators";
+import { environment } from 'src/environments/environment';
 
-const endpoint = "http://localhost:56121/api/";
-//const endpoint = "http://192.168.213.196:8080/HorusFPService/api/";
+//const endpoint = "http://localhost:56121/api/";
+const APIEndpoint = environment.APIEndpoint;
 
 const httpOptions = {};
 
@@ -45,14 +46,14 @@ export class DocumentsService {
 
   getColas(): Observable<any> {
     return this.http
-      .get(endpoint + "cargueinicial/ConsultaColasIndexacion", httpOptions)
+      .get(APIEndpoint + "cargueinicial/ConsultaColasIndexacion", httpOptions)
       .pipe(map(this.extractData));
   }
 
   getMotivosDescarte(modulo): Observable<any> {
     return this.http
       .get(
-        endpoint + "cargueinicial/MotivosDescarte?modulo=" + modulo,
+        APIEndpoint + "cargueinicial/MotivosDescarte?modulo=" + modulo,
         this.httpOptions
       )
       .pipe(map(this.extractData));
@@ -61,7 +62,7 @@ export class DocumentsService {
   getTemplate(idTipoDocumental) {
     return this.http
       .get(
-        endpoint +
+        APIEndpoint +
           "TipoDocXTemplate/getTemplate?idTipoDocumental=" +
           idTipoDocumental,
         httpOptions
@@ -73,7 +74,7 @@ export class DocumentsService {
     let usuario = localStorage.getItem("usuario");
     return this.http
       .get(
-        endpoint +
+        APIEndpoint +
           "Lote/obtenerLoteIndexacion?colaTrabajo=" +
           nombreCola +
           "&colaMsgQueue=" +
@@ -92,7 +93,7 @@ export class DocumentsService {
 
     let params = "json=" + json;
     return this.http
-      .post(endpoint + "Lote/guardar", datosLote, this.httpOptions)
+      .post(APIEndpoint + "Lote/guardar", datosLote, this.httpOptions)
       .pipe(map(this.extractData));
   }
 
