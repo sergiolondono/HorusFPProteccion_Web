@@ -69,9 +69,17 @@
                     </ul>
                 </div>   
 
-                <div style="overflow-y: scroll;" #pdfV>
-                        <pdf-viewer (keydown)="onKeyDown($event)" [src]="pdfSrc" [(page)]="page" [rotation]="rotation" [original-size]="originalSize" [fit-to-page]="fitToPage" (after-load-complete)="afterLoadComplete($event)" [zoom]="zoom" [show-all]="showAll" [stick-to-page]="stickToPage"
-                        [render-text]="renderText" [external-link-target]="'blank'" [autoresize]="autoresize" (error)="onError($event)" (on-progress)="onProgress($event)" (page-rendered)="pageRendered($event)" style="display: block; height: 70vh;"></pdf-viewer>                
+                <div style="overflow-y: scroll;overflow-x: scroll;" #pdfV>
+                    <pdf-viewer
+                        (keydown)="onKeyDown($event)" [src]="pdfSrc" [(page)]="page" 
+                        [rotation]="rotation" [original-size]="originalSize" [fit-to-page]="fitToPage" 
+                        (after-load-complete)="afterLoadComplete($event)" [zoom]="zoom" 
+                        [show-all]="showAll" [stick-to-page]="stickToPage"
+                        [render-text]="renderText" [external-link-target]="'blank'" 
+                        [autoresize]="autoresize" (error)="onError($event)" 
+                        (on-progress)="onProgress($event)" (page-rendered)="pageRendered($event)" 
+                        style="display: block; height: 70vh; width: 130vh;">
+                    </pdf-viewer>                
                 </div>    
                
                 </div>

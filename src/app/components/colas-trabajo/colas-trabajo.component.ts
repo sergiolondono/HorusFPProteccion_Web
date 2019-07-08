@@ -113,8 +113,10 @@ export class ColasTrabajoComponent {
     this.keypressed = e.keyCode;
 
     enum keyAscii {
-      k = 75,
       i = 73,
+      j = 74,
+      k = 75,
+      l = 76,
       menos = 109,
       menosInterno = 189,
       mas = 107,
@@ -164,13 +166,24 @@ export class ColasTrabajoComponent {
       this.target.nativeElement.scrollTop += 20;
     }
 
+    if (e.shiftKey && this.keypressed == keyAscii.j && this.pdfSrc != "") {
+      e.preventDefault();      
+      console.log(this.keypressed);
+      this.target.nativeElement.scrollLeft -= 20;
+    }
+    if (e.shiftKey && this.keypressed == keyAscii.l && this.pdfSrc != "") {
+      e.preventDefault();
+      console.log(this.keypressed);
+      this.target.nativeElement.scrollLeft += 20;
+    }
+
     if (e.altKey && this.keypressed == keyAscii.f3 && this.pdfSrc != "") {
       this.modalOptions.backdrop = "static";
       this.modalOptions.keyboard = false;
 
       this.modalService.open(this.modaldescarte, this.modalOptions);
     }
-    console.log(this.keypressed);
+    // console.log(this.keypressed);
   }
 
   onChange($event) {
