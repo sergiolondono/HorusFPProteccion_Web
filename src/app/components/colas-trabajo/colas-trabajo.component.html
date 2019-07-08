@@ -5,7 +5,8 @@
                 <h5 class="modal-title" id="exampleModalLongTitle">Descarte Tipo Documental</h5>
             </div>
             <div class="modal-body">
-                <ng-select *ngIf="motivosDescarte" [items]="motivosDescarte" bindLabel="labelMotivo" bindValue="motivo" style="width: 100%" [(ngModel)]="motivoSelected" placeholder="Motivo Descarte"></ng-select>
+                <ng-select *ngIf="motivosDescarte" [items]="motivosDescarte" bindLabel="motivo" 
+                bindValue="motivo" style="width: 100%" [(ngModel)]="motivoSelected" placeholder="Motivo Descarte"></ng-select>
             </div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-secondary" (click)="CerrarModal()">Cerrar</button>
@@ -78,7 +79,7 @@
                         [render-text]="renderText" [external-link-target]="'blank'" 
                         [autoresize]="autoresize" (error)="onError($event)" 
                         (on-progress)="onProgress($event)" (page-rendered)="pageRendered($event)" 
-                        style="display: block; height: 70vh; width: 130vh;">
+                        style="display: block; height: 70vh;">
                     </pdf-viewer>                
                 </div>    
                
