@@ -123,7 +123,9 @@ export class ColasTrabajoComponent {
       masInterno = 187,
       flechaDerecha = 39,
       flechaIzquierda = 37,
-      f3 = 114
+      f2 = 113,
+      f3 = 114,
+      f4 = 115
     }
 
     if (
@@ -167,7 +169,7 @@ export class ColasTrabajoComponent {
     }
 
     if (e.shiftKey && this.keypressed == keyAscii.j && this.pdfSrc != "") {
-      e.preventDefault();      
+      e.preventDefault();
       console.log(this.keypressed);
       this.target.nativeElement.scrollLeft -= 20;
     }
@@ -175,6 +177,13 @@ export class ColasTrabajoComponent {
       e.preventDefault();
       console.log(this.keypressed);
       this.target.nativeElement.scrollLeft += 20;
+    }
+
+    if (this.keypressed == keyAscii.f2 && this.pdf != "") {
+      this.page += 1;
+    }
+    if (this.keypressed == keyAscii.f4 && this.pdf != "") {
+      this.page += -1;
     }
 
     if (e.altKey && this.keypressed == keyAscii.f3 && this.pdfSrc != "") {

@@ -42,14 +42,6 @@ export function tokenGetter() {
     LoginComponent
   ],
   imports: [
-    // AuthModule.forRoot(new AuthConfig({
-    //   headerName: 'Authorization',
-    //   headerPrefix: 'Bearer',
-    //   tokenName: 'token',
-    //   tokenGetter: (() => localStorage.getItem('token') || ''),
-    //   globalHeaders: [{ 'Content-Type': 'application/json' }],
-    //   noJwtError: true
-    // })),
     BrowserModule,
     ImageViewerModule,
     HttpClientModule,
