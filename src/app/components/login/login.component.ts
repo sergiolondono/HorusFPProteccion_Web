@@ -55,7 +55,6 @@ export class LoginComponent implements OnInit {
         .subscribe(
           data => {
             this.token = data;
-            console.log("POST Request is successful", data);
             localStorage.setItem("token", this.token);
             localStorage.setItem("usuario", credentials.userName);
 

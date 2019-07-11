@@ -86,10 +86,7 @@ export class DocumentsService {
       .pipe(map(this.extractDataLote));
   }
   postGuardarLote(datosLote) {
-    console.log(datosLote);
     let json = JSON.stringify(datosLote);
-    //El backend recogerá un parametro json
-    console.log(this.httpOptions);
 
     let params = "json=" + json;
     return this.http

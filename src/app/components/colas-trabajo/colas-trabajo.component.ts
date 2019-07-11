@@ -170,12 +170,10 @@ export class ColasTrabajoComponent {
 
     if (e.shiftKey && this.keypressed == keyAscii.j && this.pdfSrc != "") {
       e.preventDefault();
-      console.log(this.keypressed);
       this.target.nativeElement.scrollLeft -= 20;
     }
     if (e.shiftKey && this.keypressed == keyAscii.l && this.pdfSrc != "") {
       e.preventDefault();
-      console.log(this.keypressed);
       this.target.nativeElement.scrollLeft += 20;
     }
 
@@ -192,11 +190,9 @@ export class ColasTrabajoComponent {
 
       this.modalService.open(this.modaldescarte, this.modalOptions);
     }
-    // console.log(this.keypressed);
   }
 
   onChange($event) {
-    console.log($event);
     this.colatrabajo = $event.nombreCola;
     this.colamsg = $event.colaMsgQueue;
     this.imagen = "";
@@ -240,7 +236,6 @@ export class ColasTrabajoComponent {
   displayform(f) {
     this.imagen = false;
     this.mostrarFormulario = false;
-    console.log(f);
     let datoslote = {
       datosFormulario: f,
       idlote: this.IdLote,
@@ -280,11 +275,9 @@ export class ColasTrabajoComponent {
     this.colas = [];
     this.restService.getColas().subscribe((data: {}) => {
       this.colas = data;
-      console.log(this.colas);
       if (this.imagen != "") {
         this.select.focus();
       }
-      console.log(this.imagen);
     });
   }
 
@@ -328,7 +321,6 @@ export class ColasTrabajoComponent {
 
         // se crean los campos dinamicamente.
         this.fields = this.lote.lstKwXTemplate;
-        console.log(this.fields);
         this.form = new FormGroup({
           fields: new FormControl(JSON.stringify(this.fields))
         });
@@ -351,7 +343,6 @@ export class ColasTrabajoComponent {
 
   onChangeTipoDocumental($event) {
     this.getTemplate($event.idTipoDocumental);
-    console.log($event);
   }
 
   getTemplate(idTipoDocumental: any) {
@@ -367,15 +358,12 @@ export class ColasTrabajoComponent {
         this.ArrayTemplate = this.template.getTemplates;
         this.idTemplateSelected = this.template.idTemplate;
         this.fields = this.template.lstKwXTemplate;
-        console.log(this.fields);
         this.form = new FormGroup({
           fields: new FormControl(JSON.stringify(this.fields))
         });
         this.unsubcribe = this.form.valueChanges.subscribe(update => {
           this.fields = JSON.parse(update.fields);
         });
-        console.log(this.idTipoDocSelected);
-        console.log(this.template);
       });
   }
 
@@ -387,14 +375,10 @@ export class ColasTrabajoComponent {
 
   incrementPage(amount: number) {
     this.page += amount;
-    console.log((this.page += amount));
-
-    // interval(500);
   }
 
   incrementZoom(amount: number) {
     this.zoom += amount;
-    console.log(this.zoom);
   }
 
   rotate(angle: number) {
@@ -412,7 +396,6 @@ export class ColasTrabajoComponent {
 
       reader.onload = (e: any) => {
         this.pdfSrc = e.target.result;
-        console.log(this.pdfSrc);
       };
 
       reader.readAsArrayBuffer($pdf.files[0]);
@@ -477,7 +460,6 @@ export class ColasTrabajoComponent {
    * @param {PDFProgressData} progressData
    */
   onProgress(progressData: PDFProgressData) {
-    console.log(progressData);
     this.progressData = progressData;
     this.isLoaded = false;
     this.error = null; // clear error
@@ -510,7 +492,6 @@ export class ColasTrabajoComponent {
    * @param {CustomEvent} e
    */
   pageRendered(e: CustomEvent) {
-    console.log("(page-rendered)", e);
   }
 
   searchQueryChanged(newQuery: string) {

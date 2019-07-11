@@ -82,7 +82,5 @@ export class FileComponent {
     }
 
     ngOnChange(){
-      console.log(this.field.value);
-      // this.field.value.
     }
 }
