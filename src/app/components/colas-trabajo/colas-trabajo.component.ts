@@ -84,6 +84,7 @@ export class ColasTrabajoComponent {
   @ViewChild("modalDescarte") modaldescarte: ElementRef;
   @ViewChild("descarte") NgSelectModule;
   @ViewChild("pdfV") public target: ElementRef;
+  @ViewChild("divFormDinamico") public divDinamico: ElementRef;
   modalOptions: NgbModalOptions = {};
   pdfSrc: string | PDFSource | ArrayBuffer;
 
@@ -125,7 +126,8 @@ export class ColasTrabajoComponent {
       flechaIzquierda = 37,
       f2 = 113,
       f3 = 114,
-      f4 = 115
+      f4 = 115,
+      tab = 9
     }
 
     if (
@@ -190,6 +192,15 @@ export class ColasTrabajoComponent {
 
       this.modalService.open(this.modaldescarte, this.modalOptions);
     }
+
+    if (this.keypressed == keyAscii.tab && this.idTemplateSelected) {
+      let divDinamico = this.divDinamico.nativeElement.scrollTop;
+      if (divDinamico === 0 || divDinamico === 1)
+      this.divDinamico.nativeElement.scrollTop += 1;
+      else
+      this.divDinamico.nativeElement.scrollTop += 30;
+    }
+
   }
 
   onChange($event) {
@@ -507,5 +518,12 @@ export class ColasTrabajoComponent {
         highlightAll: true
       });
     }
+  }
+
+  moveDivForm(movement){
+    if(movement == "up")
+      this.divDinamico.nativeElement.scrollTop -= 20;
+      else
+      this.divDinamico.nativeElement.scrollTop += 20;
   }
 }
