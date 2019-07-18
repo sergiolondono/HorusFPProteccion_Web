@@ -11,6 +11,7 @@ import { DocumentsService } from "../../documents.service";
 import { NgSelectComponent } from "@ng-select/ng-select";
 import { NgbModal, NgbModalOptions } from "@ng-bootstrap/ng-bootstrap";
 import { FormGroup, FormControl } from "@angular/forms";
+import { DatePipe } from "@angular/common";
 
 import {
   PDFProgressData,
@@ -23,7 +24,8 @@ import { MensajesService } from "src/app/mensajes.service";
 @Component({
   selector: "app-colas-trabajo",
   templateUrl: "./colas-trabajo.component.html",
-  styleUrls: ["./colas-trabajo.component.scss"]
+  styleUrls: ["./colas-trabajo.component.scss"],
+  providers: [DatePipe]
 })
 export class ColasTrabajoComponent {
   // variables para formulario dinamico
@@ -74,6 +76,8 @@ export class ColasTrabajoComponent {
   motivosDescarte: any = [];
   categoria: any;
   motivoSelected: any;
+  focus = 0;
+  date = new Date();
 
   // variable que escucha cualquier tecla digitada. sirve para renderizar la imagen
   public keypressed;
@@ -81,6 +85,7 @@ export class ColasTrabajoComponent {
   // se declaran para hacer focus en el ngselect1 de colas al inicio del componente.
   @ViewChild("ngselectColas") select: NgSelectComponent;
   @ViewChild("campos") formulario: NgSelectComponent;
+  @ViewChild("ngSelectTemplate") selectTemplate: NgSelectComponent;
   @ViewChild("modalDescarte") modaldescarte: ElementRef;
   @ViewChild("descarte") NgSelectModule;
   @ViewChild("pdfV") public target: ElementRef;
@@ -91,7 +96,8 @@ export class ColasTrabajoComponent {
   constructor(
     private toastr: MensajesService,
     private modalService: NgbModal,
-    private restService: DocumentsService
+    private restService: DocumentsService,
+    private datePipe: DatePipe
   ) {
     this.getColas();
     this.getMotivosDescarte();
@@ -127,7 +133,8 @@ export class ColasTrabajoComponent {
       f2 = 113,
       f3 = 114,
       f4 = 115,
-      tab = 9
+      tab = 9,
+      enter = 13
     }
 
     if (
@@ -196,9 +203,48 @@ export class ColasTrabajoComponent {
     if (this.keypressed == keyAscii.tab && this.idTemplateSelected) {
       let divDinamico = this.divDinamico.nativeElement.scrollTop;
       if (divDinamico === 0 || divDinamico === 1)
-      this.divDinamico.nativeElement.scrollTop += 1;
-      else
-      this.divDinamico.nativeElement.scrollTop += 30;
+        this.divDinamico.nativeElement.scrollTop += 1;
+      else this.divDinamico.nativeElement.scrollTop += 30;
+    }
+
+    if (
+      this.keypressed ==keyAscii.enter &&
+      this.idTemplateSelected &&
+      this.idTipoDocSelected
+    ) {
+      let divDinamico = this.divDinamico.nativeElement.scrollTop;
+      if (this.focus < this.fields.length) {
+        if (this.focus == 0) {
+          document.getElementById(this.fields[this.focus].name).focus();
+          this.focus = this.focus + 1;
+          if (divDinamico === 0 || divDinamico === 1)
+            this.divDinamico.nativeElement.scrollTop += 1;
+        } else {
+          document.getElementById(this.fields[this.focus].name).focus();
+          this.focus = this.focus + 1;
+          if (divDinamico === 0 || divDinamico === 1)
+            this.divDinamico.nativeElement.scrollTop += 1;
+          else this.divDinamico.nativeElement.scrollTop += 30;
+        }
+      }
+    }
+
+    if (e.shiftKey &&  e.ctrlKey &&
+      this.idTemplateSelected &&
+      this.idTemplateSelected
+    ) {
+      if (this.fields[this.focus - 1].type === "datetext") {
+        var date = this.datePipe.transform(this.date, "ddMMyyyy");
+        (<HTMLInputElement>(
+          document.getElementById(this.fields[this.focus - 1].name)
+        )).value = date;
+      }
+    }
+
+    if (e.shiftKey && this.keypressed == keyAscii.tab) {
+      if (this.focus > 0) {
+        this.focus = this.focus - 1;
+      }
     }
 
   }
@@ -354,6 +400,7 @@ export class ColasTrabajoComponent {
 
   onChangeTipoDocumental($event) {
     this.getTemplate($event.idTipoDocumental);
+    this.selectTemplate.focus();
   }
 
   getTemplate(idTipoDocumental: any) {
@@ -502,8 +549,7 @@ export class ColasTrabajoComponent {
    *
    * @param {CustomEvent} e
    */
-  pageRendered(e: CustomEvent) {
-  }
+  pageRendered(e: CustomEvent) {}
 
   searchQueryChanged(newQuery: string) {
     if (newQuery !== this.pdfQuery) {
@@ -520,10 +566,8 @@ export class ColasTrabajoComponent {
     }
   }
 
-  moveDivForm(movement){
-    if(movement == "up")
-      this.divDinamico.nativeElement.scrollTop -= 20;
-      else
-      this.divDinamico.nativeElement.scrollTop += 20;
+  moveDivForm(movement) {
+    if (movement == "up") this.divDinamico.nativeElement.scrollTop -= 20;
+    else this.divDinamico.nativeElement.scrollTop += 20;
   }
 }
