@@ -6,7 +6,7 @@ import {
   ElementRef,
   Input
 } from "@angular/core";
-import { DocumentsService } from "../../documents.service";
+
 
 import { NgSelectComponent } from "@ng-select/ng-select";
 import { NgbModal, NgbModalOptions } from "@ng-bootstrap/ng-bootstrap";
@@ -19,7 +19,8 @@ import {
   PDFDocumentProxy,
   PDFSource
 } from "ng2-pdf-viewer";
-import { MensajesService } from "src/app/mensajes.service";
+import { MensajesService } from 'src/app/services/mensajes.service';
+import { DocumentsService } from 'src/app/services/documents.service';
 
 @Component({
   selector: "app-colas-trabajo",

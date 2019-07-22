@@ -21,8 +21,8 @@ import { LoginComponent } from './components/login/login.component';
 
 
 import {NgbModule,NgbModal} from '@ng-bootstrap/ng-bootstrap';
-import { FieldsFunctionalityService } from './fields-functionality.service';
-import {DocumentsService} from './documents.service';
+import { FieldsFunctionalityService } from './services/fields-functionality.service';
+import {DocumentsService} from './services/documents.service';
 
 // export function authHttpServiceFactory(http: Http, options: RequestOptions) {
 //   return new AuthHttp(new AuthConfig({

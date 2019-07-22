@@ -1,9 +1,9 @@
 import { Component, OnInit } from '@angular/core';
 import {Router} from  '@angular/router';
 import {ActivatedRoute} from '@angular/router';
-import {DocumentsService} from '../../documents.service';
 import { Observable } from 'rxjs';
 import { map, take } from 'rxjs/operators';
+import { DocumentsService } from 'src/app/services/documents.service';
 
 @Component({
   selector: 'app-menu',

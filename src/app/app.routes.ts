@@ -1,8 +1,7 @@
 import {RouterModule, Routes } from '@angular/router'
 import {ColasTrabajoComponent} from './components/colas-trabajo/colas-trabajo.component';
 import {LoginComponent} from './components/login/login.component';
-import {AuthGuard} from './auth-guard.service';
-
+import { AuthGuard } from './services/auth-guard.service';
 
 const APP_ROUTES: Routes = [
 

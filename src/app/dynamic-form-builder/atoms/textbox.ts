@@ -1,6 +1,6 @@
 import { Component, Input } from '@angular/core';
 import { FormGroup } from '@angular/forms';
-import { FieldsFunctionalityService } from 'src/app/fields-functionality.service';
+import { FieldsFunctionalityService } from 'src/app/services/fields-functionality.service';
 
 // text,email,tel,textarea,password, 
 @Component({

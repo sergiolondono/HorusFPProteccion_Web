@@ -4,6 +4,8 @@ import { FormBuilder, FormGroup, Validators } from "@angular/forms";
 import { ToastrService } from "ngx-toastr";
 import { HttpClient, HttpHeaders } from "@angular/common/http";
 import { environment } from 'src/environments/environment';
+import Swal from 'sweetalert2';
+import { SweetMessageService } from 'src/app/services/sweet-message.service';
 
 @Component({
   selector: "app-login",
@@ -22,6 +24,7 @@ export class LoginComponent implements OnInit {
     private router: Router,
     private fb: FormBuilder,
     private http: HttpClient,
+    private message: SweetMessageService,
     private toastr: ToastrService
   ) {}
 
@@ -37,13 +40,10 @@ export class LoginComponent implements OnInit {
       (this.form.get(field).untouched && this.formSubmitAttempt)
     );
   }
-  showError() {
-    this.toastr.error(
-      "",
-      "Usuario o contraseña incorrectos o el usuario ya esta logueado!"
-    );
-  }
+
   onSubmit(formulario) {
+    this.message.showLoading();
+
     let credentials = {
       userName: formulario.usuario,
       password: formulario.clave
@@ -54,6 +54,8 @@ export class LoginComponent implements OnInit {
         .post(this.APIEndpoint + "login/authenticate", credentials)
         .subscribe(
           data => {
+            this.message.close();
+
             this.token = data;
             localStorage.setItem("token", this.token);
             localStorage.setItem("usuario", credentials.userName);
@@ -61,7 +63,7 @@ export class LoginComponent implements OnInit {
             this.router.navigateByUrl("/colas");
           },
           error => {
-            this.showError();
+            this.message.showError('Usuario o contraseña incorrecta/Usuario logueado en otra máquina!');
           }
         );
     }

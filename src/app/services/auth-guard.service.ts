@@ -1,7 +1,6 @@
 import { Injectable } from '@angular/core';
 import { CanActivate, Router, RouterStateSnapshot } from '@angular/router';
-import {DocumentsService} from './documents.service'
-
+import { DocumentsService } from './documents.service';
 
 @Injectable({
   providedIn: 'root'
