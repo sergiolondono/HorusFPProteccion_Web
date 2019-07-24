@@ -36,7 +36,7 @@ export class ColasTrabajoComponent {
 
   // variables para visor pdf
   error: any;
-  page = 1;
+  page = 1; 
   rotation = 0;
   zoom = 1.0;
   originalSize = true;
