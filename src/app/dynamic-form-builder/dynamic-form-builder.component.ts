@@ -13,8 +13,10 @@ import { FormGroup, FormControl, Validators } from '@angular/forms';
       <div class="form-group row">
         <div class="col-md-3"></div>
         <div class="col-md-12" *ngIf="form.valid">
-          <button type="submit" [disabled]="!form.valid"  class="btn btn-outline-primary btn-block " >Guardar</button>
-           <!--<strong >Saved all values</strong>-->
+          <button type="submit" [disabled]="!form.valid"  
+          class="btn btn-outline-primary btn-block " >
+          Guardar
+          </button>
         </div>
       </div>
     </form>
