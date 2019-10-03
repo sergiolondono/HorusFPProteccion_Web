@@ -63,7 +63,11 @@ export class LoginComponent implements OnInit {
             this.router.navigateByUrl("/colas");
           },
           error => {
-            this.message.showError('Usuario o contraseña incorrecta/Usuario logueado en otra máquina!');
+            console.log(error.error.Message);
+            if(error.error.Message != null)
+              this.message.showError(error.error.Message);
+            else  
+              this.message.showError(error.message);
           }
         );
     }

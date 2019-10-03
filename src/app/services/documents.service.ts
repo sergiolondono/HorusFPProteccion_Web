@@ -4,7 +4,7 @@ import {
   HttpHeaders,
   HttpErrorResponse
 } from "@angular/common/http";
-import { Observable, of } from "rxjs";
+import { Observable, of, throwError } from "rxjs";
 import { map, catchError, tap } from "rxjs/operators";
 import { environment } from 'src/environments/environment';
 
@@ -83,7 +83,10 @@ export class DocumentsService {
           usuario,
         httpOptions
       )
-      .pipe(map(this.extractDataLote));
+      .pipe(
+        map(this.extractDataLote),
+        catchError(this.handle_Error)
+        );
   }
   postGuardarLote(datosLote) {
     let json = JSON.stringify(datosLote);
@@ -101,6 +104,19 @@ export class DocumentsService {
   }
 
   GuardarLote() {}
+  
+  handle_Error(error) {
+    let errorMessage = '';
+    if (error.error instanceof ErrorEvent) {
+      // client-side error
+      errorMessage = `Error: ${error.error.message}`;
+    } else {
+      // server-side error
+      console.log(`status: ${error.status} Message: ${error.error.ExceptionMessage}`);
+      errorMessage = `\n${error.error.ExceptionMessage}`;
+    }
+    return throwError(errorMessage);
+  }
   
 }
 

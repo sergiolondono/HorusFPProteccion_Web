@@ -253,7 +253,7 @@ export class ColasTrabajoComponent {
   onChange($event) {
     this.colatrabajo = $event.nombreCola;
     this.colamsg = $event.colaMsgQueue;
-    this.imagen = "";
+    this.imagen = false;
     this.getLotes($event.nombreCola, $event.colaMsgQueue);
   }
 
@@ -387,6 +387,9 @@ export class ColasTrabajoComponent {
 
           this.formulario.focus();
         });
+      },
+      error => {
+        this.toastr.showWarning("No se encontraron lotes para procesar!");
       });
   }
 

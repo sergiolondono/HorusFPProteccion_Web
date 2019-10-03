@@ -14,14 +14,7 @@ export class MenuComponent implements OnInit {
   authenticate: any;
   isLoggedIn$: Observable<boolean>;
 
-  constructor( private router:Router, private activatedRoute:ActivatedRoute,public service:DocumentsService) {
-    
-     
-
-
-    
-
-   }
+  constructor( private router:Router, private activatedRoute:ActivatedRoute,public service:DocumentsService) { }
 
   ngOnInit() {
 

@@ -25,10 +25,16 @@
         <div *ngIf="!imagen" class="container">
             <br><br>
             <h3 class="h3"></h3>
-            <div class="row">
-                <div class="col-md-12">
-                    <div class="loader16"></div>
-                </div>
+            <div id="loading" class="text-center">
+                <div class="spinner-grow text-muted"></div>
+                <div class="spinner-grow text-primary"></div>
+                <div class="spinner-grow text-success"></div>
+                <div class="spinner-grow text-info"></div>
+                <div class="spinner-grow text-warning"></div>
+                <div class="spinner-grow text-danger"></div>
+                <div class="spinner-grow text-secondary"></div>
+                <div class="spinner-grow text-dark"></div>
+                <div class="spinner-grow text-light"></div>
             </div>
         </div>
         <div *ngIf="imagen" class="col col-md-8 col-md-8">
