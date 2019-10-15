@@ -42,14 +42,13 @@ export class LoginComponent implements OnInit {
   }
 
   onSubmit(formulario) {
-    this.message.showLoading();
-
     let credentials = {
       userName: formulario.usuario,
       password: formulario.clave
     };
 
     if (this.form.valid) {
+      this.message.showLoading();
       return this.http
         .post(this.APIEndpoint + "login/authenticate", credentials)
         .subscribe(
