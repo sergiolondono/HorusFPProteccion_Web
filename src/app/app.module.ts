@@ -42,7 +42,6 @@ export function tokenGetter() {
   ],
   imports: [
     BrowserModule,
-    ImageViewerModule,
     HttpClientModule,
     JwtModule.forRoot({
       config: {
