@@ -29,7 +29,6 @@
     "git-install": "^0.5.2",
     "iv-viewer": "^2.0.1",
     "ng-inline-svg": "^8.4.1",
-    "ng2-image-viewer": "^3.0.4",
     "ng2-pdf-viewer": "^5.3.2",
     "ng2-toastr": "^4.1.2",
     "ngx-toastr": "^10.0.4",
