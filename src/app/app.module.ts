@@ -1,6 +1,5 @@
 import { BrowserModule } from '@angular/platform-browser';
 import { NgModule } from '@angular/core';
-import { ImageViewerModule } from 'ng2-image-viewer';
  import {APP_ROUTING} from './app.routes';
  import { NgSelectModule } from '@ng-select/ng-select';
  import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
