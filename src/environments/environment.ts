@@ -4,8 +4,8 @@
 
 export const environment = {
   production: false,
-   APIEndpoint: 'http://192.168.213.196:8080/HorusFPServicePruebas/api/'
-  // APIEndpoint: 'http://localhost:56121/api/'
+  // APIEndpoint: 'http://192.168.213.196:8080/HorusFPServicePruebas/api/'
+   APIEndpoint: 'http://localhost:56121/api/'
 };
 
 /*

@@ -25,8 +25,7 @@
                         ],
                         "styles": [
                             "src/styles.css",
-                            "node_modules/bootstrap/dist/css/bootstrap.min.css",
-                            "./node_modules/ng2-image-viewer/imageviewer.scss"
+                            "./node_modules/bootstrap/dist/css/bootstrap.min.css"
                         ],
                         "scripts": [],
                         "es5BrowserSupport": true
