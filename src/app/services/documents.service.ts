@@ -49,6 +49,22 @@ export class DocumentsService {
       .get(APIEndpoint + "cargueinicial/ConsultaColasIndexacion", httpOptions)
       .pipe(map(this.extractData));
   }
+  
+  validarLoteFull(iddocumentos,idlote,xnumeroIdentificacion,xtipoIdentificacion,registrarTiempos,Radicado)
+  {
+    let datosLote = {
+      IdDocs : iddocumentos,
+      idLote :idlote,
+      xNumeroIdentificacion :xnumeroIdentificacion,
+      xTipoDocumentoIdentificacion : xtipoIdentificacion,
+      registrarTiempos: registrarTiempos,
+      Radicado:Radicado
+    }
+   // return this.http.get(endpoint+ 'Lote/ValidarLoteFull?IdDocs='+iddocumentos+'&idlote='+idlote+'&xNumeroIdentificacion='+xnumeroIdentificacion+"&xTipoDocumentoIdentificacion="+xtipoIdentificacion ,httpOptions).pipe(
+    return this.http.post(APIEndpoint+ 'Lote/ValidarLoteFull',datosLote,httpOptions).pipe(
+     map(this.extractDataLote));
+  }
+
 
   getMotivosDescarte(modulo): Observable<any> {
     return this.http
@@ -59,15 +75,30 @@ export class DocumentsService {
       .pipe(map(this.extractData));
   }
 
-  getTemplate(idTipoDocumental) {
+  getTemplate(idTipoDocumental,iddocumento,categoria,NroIdentificacion,TipoIdentificacion,RazonSocial) {  
+    let datoslote = {
+      idTipodocumental: idTipoDocumental,
+      iddocumento: iddocumento,
+      categoria: categoria,
+      NroIdentificacion: NroIdentificacion,
+      TipoIdentificacion: TipoIdentificacion,
+      RazonSocial : RazonSocial
+    };
     return this.http
-      .get(
-        APIEndpoint +
-          "TipoDocXTemplate/getTemplate?idTipoDocumental=" +
-          idTipoDocumental,
-        httpOptions
-      )
-      .pipe(map(this.extractDataTemplate));
+    .post(
+      APIEndpoint +
+        "TipoDocXTemplate/getTemplate" ,
+      datoslote
+    )
+    .pipe(map(this.extractDataTemplate));
+    // return this.http
+    //   .get(
+    //     APIEndpoint +
+    //       "TipoDocXTemplate/getTemplate?idTipoDocumental=" +
+    //       idTipoDocumental,
+    //     httpOptions
+    //   )
+    //   .pipe(map(this.extractDataTemplate));
   }
 
   getLotes(nombreCola, colaMsgqueue) {
