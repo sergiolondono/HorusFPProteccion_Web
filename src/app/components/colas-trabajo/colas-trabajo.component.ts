@@ -93,6 +93,7 @@ export class ColasTrabajoComponent {
 
   // se declaran para hacer focus en el ngselect1 de colas al inicio del componente.
   @ViewChild("ngselectColas") select: NgSelectComponent;
+  @ViewChild("ngselectTipoDocs") ngSelectTipoDocs: NgSelectComponent;
   @ViewChild("campos") formulario: NgSelectComponent;
   @ViewChild("ngSelectTemplate") selectTemplate: NgSelectComponent;
   @ViewChild("ngselectTipodocumental") selectTipodoc: NgSelectComponent;
@@ -338,7 +339,7 @@ export class ColasTrabajoComponent {
         );
         localStorage.setItem("NroIdentificacion", f.NroIdentificacion);
         localStorage.setItem("TipoIdentificacion", f.TipoIdentificacion);
-        localStorage.setItem("Nombre_RazonSocial", f.Nombre_RazonSocial);
+        localStorage.setItem("Nombre_RazonSocial", f.Nombre_RazonSocial);        
       }
     }
   }
@@ -473,7 +474,7 @@ export class ColasTrabajoComponent {
         if (this.imagen == "")
           //this.toastr.showWarning();
 
-          this.IdLote = this.lote.idLote;
+        this.IdLote = this.lote.idLote;
         this.IdDocumento = this.lote.idDocumento;
         this.indexDocActual = this.lote.indexDocActual;
         this.CantidadDocumentos = this.lote.totalDocumentos;
@@ -512,6 +513,7 @@ export class ColasTrabajoComponent {
           this.formulario.focus();
         });
       });
+      this.select.focus();
   }
 
   getMotivosDescarte() {
