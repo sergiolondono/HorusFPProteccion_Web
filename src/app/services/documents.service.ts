@@ -84,6 +84,7 @@ export class DocumentsService {
       TipoIdentificacion: TipoIdentificacion,
       RazonSocial : RazonSocial
     };
+
     return this.http
     .post(
       APIEndpoint +
@@ -91,6 +92,7 @@ export class DocumentsService {
       datoslote
     )
     .pipe(map(this.extractDataTemplate));
+
     // return this.http
     //   .get(
     //     APIEndpoint +
